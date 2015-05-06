@@ -1,0 +1,10 @@
+{
+  "name": "etdsolutions/bootstrap-datetimepicker",
+  "description": "Shim repository for Bootstrap 3 Datepicker",
+  "homepage": "https://github.com/Eonasdan/bootstrap-datetimepicker",
+  "license": "MIT",
+  "require": {
+    "etdsolutions/jquery": ">=1.9.1",
+    "etdsolutions/moment": ">=2.8"
+  }
+}
