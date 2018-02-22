@@ -169,6 +169,8 @@
                         return actualFormat.indexOf('Y') !== -1;
                     case 'M':
                         return actualFormat.indexOf('M') !== -1;
+                    case 'w':
+                        return actualFormat.toLowerCase().indexOf('w') !== -1;
                     case 'd':
                         return actualFormat.toLowerCase().indexOf('d') !== -1;
                     case 'h':
@@ -188,7 +190,7 @@
             },
 
             hasDate = function () {
-                return (isEnabled('y') || isEnabled('M') || isEnabled('d'));
+                return (isEnabled('y') || isEnabled('M') || isEnabled('d') || isEnabled('w'));
             },
 
             getDatePickerTemplate = function () {
@@ -702,6 +704,10 @@
                 daysViewHeader.eq(1).attr('title', options.tooltips.selectMonth);
                 daysViewHeader.eq(2).find('span').attr('title', options.tooltips.nextMonth);
 
+                if (options.selectWeek) {
+                    daysView.addClass('select-week');
+                }
+
                 daysView.find('.disabled').removeClass('disabled');
                 daysViewHeader.eq(1).text(viewDate.format(options.dayViewHeaderFormat));
 
@@ -719,6 +725,9 @@
                         row = $('<tr>');
                         if (options.calendarWeeks) {
                             row.append('<td class="cw">' + currentDate.week() + '</td>');
+                            if (options.selectWeek && currentDate.isSame(date, 'w') && !unset) {
+                                row.addClass('highlighted');
+                            }
                         }
                         html.push(row);
                     }
@@ -1419,7 +1428,7 @@
                 if (isEnabled('M')) {
                     minViewModeNumber = 1;
                 }
-                if (isEnabled('d')) {
+                if (isEnabled('d') || isEnabled('w')) {
                     minViewModeNumber = 0;
                 }
 
@@ -2010,6 +2019,20 @@
             }
 
             options.calendarWeeks = calendarWeeks;
+            update();
+            return picker;
+        };
+
+        picker.selectWeek = function (selectWeek) {
+            if (arguments.length === 0) {
+                return options.selectWeek;
+            }
+
+            if (typeof selectWeek !== 'boolean') {
+                throw new TypeError('selectWeek() expects parameter to be a boolean value');
+            }
+
+            options.selectWeek = selectWeek;
             update();
             return picker;
         };
